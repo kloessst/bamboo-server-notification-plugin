@@ -16,7 +16,7 @@
     </organization>
     <scm>
         <connection>scm:git:https://github.com/ls1intum/bamboo-server-notification-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:ls1intum/bamboo-server-notification-plugin.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com:ls1intum/bamboo-server-notification-plugin.git</developerConnection>
         <url>https://github.com/ls1intum/bamboo-server-notification-plugin</url>
     </scm>
     <name>Server Notifications for Bamboo</name>
