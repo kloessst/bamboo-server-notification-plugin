@@ -23,6 +23,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: '${{ env.java }}'
+        id: github
         username: kloessst
         password: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
