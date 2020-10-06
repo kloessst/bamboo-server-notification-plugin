@@ -23,7 +23,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: '${{ env.java }}'
-        id: github
         username: kloessst
         password: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
@@ -49,5 +48,4 @@ jobs:
         git config user.name "GitHub Actions"
     - name: Execute Maven Prepare Release
       run: atlas-mvn -B release:prepare
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
