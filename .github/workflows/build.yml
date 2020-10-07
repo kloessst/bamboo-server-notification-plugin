@@ -90,8 +90,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: staging/bamboo-server-1.3.14.jar
-        asset_name: bamboo-server-notification-plugin-${{ steps.get_version.outputs.VERSION }}
+        asset_path: staging
+        asset_name: bamboo-server-notification-plugin-${{ steps.get_version.outputs.VERSION }}.jar
         asset_content_type: application/zip
 
   test:
