@@ -47,6 +47,6 @@ jobs:
     - name: Execute Maven Prepare Release
       run: atlas-mvn -B release:prepare
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PAT }}
 
 
