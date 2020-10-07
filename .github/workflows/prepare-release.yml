@@ -24,7 +24,8 @@ jobs:
       with:
         java-version: '${{ env.java }}'
     - uses: actions/checkout@v2
-      token: ${{ secrets.PAT }}
+      with:
+        token: ${{ secrets.PAT }}
     - name: Cache Maven packages
       uses: actions/cache@v2
       with:
