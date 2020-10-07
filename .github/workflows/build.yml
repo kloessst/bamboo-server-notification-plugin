@@ -58,7 +58,6 @@ jobs:
   release:
     needs: [build, test]
     if: github.ref == 'refs/heads/master'
-    name: Create Release
     runs-on: ubuntu-latest
     steps:
     - name: Setup Java
@@ -79,7 +78,7 @@ jobs:
         opt/atlassian-plugin-sdk/bin/atlas-version
     - name: Get version
       run: |
-        BUILD_VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+        BUILD_VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         echo "VERSION=${BUILD_VERSION}" >> $GITHUB_ENV
         echo $VERSION
     - name: Create Release
