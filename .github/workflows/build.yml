@@ -67,9 +67,19 @@ jobs:
         java-version: '${{ env.java }}'
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Install Bamboo SDK
+      run: |
+        wget -q https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-tgz
+        mkdir opt
+        tar -xzf *plugin-sdk* -C opt
+        mv opt/*plugin-sdk* opt/atlassian-plugin-sdk
+        chmod a+x opt/atlassian-plugin-sdk/bin/*
+        chmod a+x opt/atlassian-plugin-sdk/apache-maven-*/bin/*
+        echo "opt/atlassian-plugin-sdk/bin" >> $GITHUB_PATH
+        opt/atlassian-plugin-sdk/bin/atlas-version
     - name: Get version
       run: |
-        echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        echo "VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
         echo $VERSION
     - name: Create Release
       id: create_release
