@@ -79,7 +79,7 @@ jobs:
         opt/atlassian-plugin-sdk/bin/atlas-version
     - name: Get version
       run: |
-        echo "VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        echo "VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout | echo)" >> $GITHUB_ENV
         echo $VERSION
     - name: Create Release
       id: create_release
@@ -87,8 +87,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: $VERSION
-        release_name: Release $VERSION
+        tag_name: ${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
         draft: false
         prerelease: false
     - name: Download pre-build artifact
@@ -106,6 +106,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: staging/*.jar
+        asset_name: bamboo-server-notification-plugin-${{ env.VERSION }}
         asset_content_type: application/zip
 
   test:
