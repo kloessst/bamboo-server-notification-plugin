@@ -17,7 +17,8 @@ env:
   java: 1.8
 
 jobs:
-  style:
+
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Setup Java
@@ -45,37 +46,11 @@ jobs:
         opt/atlassian-plugin-sdk/bin/atlas-version
     - name: Spotless
       run: atlas-mvn -B spotless:check
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Setup Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: '${{ env.java }}'
-    - uses: actions/checkout@v2
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
-    - name: Install Bamboo SDK
-      run: |
-        wget -q https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-tgz
-        mkdir opt
-        tar -xzf *plugin-sdk* -C opt
-        mv opt/*plugin-sdk* opt/atlassian-plugin-sdk
-        chmod a+x opt/atlassian-plugin-sdk/bin/*
-        chmod a+x opt/atlassian-plugin-sdk/apache-maven-*/bin/*
-        echo "opt/atlassian-plugin-sdk/bin" >> $GITHUB_PATH
-        opt/atlassian-plugin-sdk/bin/atlas-version
     - name: Build
       run: atlas-package -DskipTests=true
-    - if: ${{ success() }}
+    - name: Copy artifact
       run: mkdir staging && cp target/*.jar staging
     - name: Upload artifact
-      if: ${{ success() }}
       uses: actions/upload-artifact@v2
       with:
         name: plugin
