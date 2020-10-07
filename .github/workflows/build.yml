@@ -54,6 +54,49 @@ jobs:
       with:
         name: plugin
         path: staging
+  
+  release:
+    needs: [build, test]
+    if: github.ref == 'refs/heads/master'
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: '${{ env.java }}'
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Get version
+      run: |
+        atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout >> $VERSION
+        echo $VERSION
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: $VERSION
+        release_name: Release $VERSION
+        draft: false
+        prerelease: false
+    - name: Download pre-build artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: plugin
+        path: staging
+    - name: debug
+      run: ls
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: staging/*.jar
+        asset_content_type: application/zip
 
   test:
     runs-on: ubuntu-latest
