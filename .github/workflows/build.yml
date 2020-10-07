@@ -69,7 +69,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Get version
       run: |
-        atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout >> $VERSION
+        echo "VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
         echo $VERSION
     - name: Create Release
       id: create_release
