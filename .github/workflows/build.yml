@@ -79,7 +79,8 @@ jobs:
         opt/atlassian-plugin-sdk/bin/atlas-version
     - name: Get version
       run: |
-        echo "VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout | echo)" >> $GITHUB_ENV
+        BUILD_VERSION=$(atlas-mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+        echo "VERSION=${BUILD_VERSION}" >> $GITHUB_ENV
         echo $VERSION
     - name: Create Release
       id: create_release
